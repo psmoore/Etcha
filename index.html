@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Etcha.company | Sketch Connections Between Prediction Markets & Investments</title>
+    <link rel="icon" type="image/png" href="Etcha_button.png">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --etcha-red: #CC0000;
+            --etcha-red-dark: #990000;
+            --etcha-grey: #E8E4E0;
+            --etcha-grey-dark: #D4D0CC;
+            --etcha-charcoal: #2A2A2A;
+            --etcha-black: #1A1A1A;
+            --etcha-gold: #C5A356;
+            --etcha-gold-dark: #A68A3C;
+            --screen-shadow: inset 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--etcha-red);
+            color: var(--etcha-charcoal);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* The main "toy" frame */
+        .etcha-frame {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Screen sections - the grey drawing area */
+        .screen {
+            background: var(--etcha-grey);
+            border-radius: 20px;
+            margin: 20px 0;
+            padding: 60px 50px;
+            box-shadow: var(--screen-shadow), 0 8px 32px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .screen::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(0,0,0,0.02) 2px,
+                    rgba(0,0,0,0.02) 4px
+                );
+            pointer-events: none;
+        }
+
+        /* Header / Navigation */
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+        }
+
+        .logo {
+            font-family: 'Caveat', cursive;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--etcha-gold);
+            text-shadow: 2px 2px 0 var(--etcha-gold-dark);
+            letter-spacing: 2px;
+        }
+
+        .nav-cta {
+            background: var(--etcha-gold);
+            color: var(--etcha-black);
+            padding: 12px 28px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .nav-cta:hover {
+            background: var(--etcha-grey);
+            color: var(--etcha-red);
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 80px 40px;
+        }
+
+        .hero-headline {
+            font-family: 'Caveat', cursive;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 30px;
+            color: var(--etcha-charcoal);
+        }
+
+        .hero-subhead {
+            font-size: 1.1rem;
+            font-weight: 300;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            line-height: 1.8;
+            color: var(--etcha-black);
+        }
+
+        /* Etched line decoration - mimics the toy's drawing */
+        .etch-line {
+            height: 3px;
+            background: var(--etcha-charcoal);
+            margin: 40px auto;
+            max-width: 200px;
+        }
+
+        .etch-line.zigzag {
+            background: none;
+            height: auto;
+            display: flex;
+            justify-content: center;
+            gap: 0;
+        }
+
+        .etch-line.zigzag::before {
+            content: '';
+            display: block;
+            width: 200px;
+            height: 20px;
+            background:
+                linear-gradient(135deg, var(--etcha-charcoal) 25%, transparent 25%) -10px 0,
+                linear-gradient(225deg, var(--etcha-charcoal) 25%, transparent 25%) -10px 0,
+                linear-gradient(315deg, var(--etcha-charcoal) 25%, transparent 25%),
+                linear-gradient(45deg, var(--etcha-charcoal) 25%, transparent 25%);
+            background-size: 20px 20px;
+            background-color: transparent;
+        }
+
+        /* Problem Section - The Villain */
+        .problem-section {
+            padding: 60px 40px;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--etcha-red);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .problem-headline {
+            font-family: 'Caveat', cursive;
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 40px;
+            line-height: 1.2;
+        }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .problem-card {
+            background: rgba(255,255,255,0.5);
+            padding: 30px;
+            position: relative;
+        }
+
+        .problem-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--etcha-charcoal);
+        }
+
+        .problem-card h3 {
+            font-family: 'Caveat', cursive;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .problem-card p {
+            font-size: 0.9rem;
+            line-height: 1.7;
+            font-weight: 300;
+        }
+
+        /* Expertise Section - The Wise Advisor */
+        .expertise-section {
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        .expertise-headline {
+            font-family: 'Caveat', cursive;
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 20px;
+        }
+
+        .expertise-sub {
+            font-size: 1rem;
+            max-width: 800px;
+            margin: 0 auto 50px;
+            line-height: 1.8;
+            font-weight: 300;
+        }
+
+        .credentials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            text-align: center;
+        }
+
+        .credential {
+            padding: 20px;
+        }
+
+        .credential-number {
+            font-family: 'Caveat', cursive;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--etcha-red);
+            line-height: 1;
+        }
+
+        .credential-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 10px;
+        }
+
+        /* Quote Section */
+        .quote-section {
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        .quote-text {
+            font-family: 'Caveat', cursive;
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-style: italic;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            line-height: 1.5;
+        }
+
+        .quote-author {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .quote-title {
+            font-size: 0.8rem;
+            font-weight: 300;
+            color: #666;
+        }
+
+        /* Solution Section - The Gift */
+        .solution-section {
+            padding: 60px 40px;
+        }
+
+        .solution-headline {
+            font-family: 'Caveat', cursive;
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .solution-sub {
+            font-size: 1rem;
+            max-width: 700px;
+            margin: 0 auto 50px;
+            line-height: 1.8;
+            font-weight: 300;
+            text-align: center;
+        }
+
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            padding: 20px;
+            background: rgba(255,255,255,0.3);
+        }
+
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--etcha-charcoal);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .feature-icon svg {
+            width: 20px;
+            height: 20px;
+            stroke: var(--etcha-grey);
+            fill: none;
+            stroke-width: 2;
+        }
+
+        .feature-text h4 {
+            font-family: 'Caveat', cursive;
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+        }
+
+        .feature-text p {
+            font-size: 0.85rem;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 80px 40px;
+            text-align: center;
+        }
+
+        .cta-headline {
+            font-family: 'Caveat', cursive;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            margin-bottom: 20px;
+        }
+
+        .cta-sub {
+            font-size: 1rem;
+            max-width: 600px;
+            margin: 0 auto 40px;
+            line-height: 1.7;
+            font-weight: 300;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: var(--etcha-red);
+            color: white;
+            padding: 20px 50px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button:hover {
+            background: var(--etcha-red-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(204, 0, 0, 0.3);
+        }
+
+        .cta-button::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .cta-button:hover::after {
+            left: 100%;
+        }
+
+        /* Dial decorations - mimics the Etch-A-Sketch knobs */
+        .dial-container {
+            display: flex;
+            justify-content: space-between;
+            padding: 30px 60px;
+            position: relative;
+        }
+
+        .dial {
+            width: 80px;
+            height: 80px;
+            background: var(--etcha-grey);
+            border-radius: 50%;
+            box-shadow:
+                inset 0 -4px 10px rgba(0,0,0,0.2),
+                0 4px 15px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .dial::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--etcha-charcoal);
+            border-radius: 50%;
+        }
+
+        .dial::after {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 15px;
+            background: var(--etcha-charcoal);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .footer-text {
+            font-size: 0.8rem;
+            color: var(--etcha-gold);
+            letter-spacing: 1px;
+        }
+
+        /* Animated etching effect */
+        @keyframes etch {
+            0% { stroke-dashoffset: 1000; }
+            100% { stroke-dashoffset: 0; }
+        }
+
+        .etch-svg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            opacity: 0.1;
+        }
+
+        .etch-svg path {
+            stroke: var(--etcha-charcoal);
+            stroke-width: 2;
+            fill: none;
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: etch 3s ease-out forwards;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .screen {
+                padding: 40px 25px;
+                border-radius: 15px;
+                margin: 15px 0;
+            }
+
+            .nav-bar {
+                flex-direction: column;
+                gap: 20px;
+                padding: 20px;
+            }
+
+            .hero {
+                padding: 50px 20px;
+            }
+
+            .problem-section,
+            .expertise-section,
+            .solution-section,
+            .quote-section,
+            .cta-section {
+                padding: 40px 20px;
+            }
+
+            .dial-container {
+                padding: 20px 30px;
+            }
+
+            .dial {
+                width: 60px;
+                height: 60px;
+            }
+
+            .dial::before {
+                width: 35px;
+                height: 35px;
+            }
+
+            .dial::after {
+                height: 10px;
+                top: 10px;
+            }
+        }
+
+        /* Scroll animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="etcha-frame">
+        <!-- Navigation -->
+        <nav class="nav-bar">
+            <div class="logo">Etcha.company</div>
+            <a href="#try-it" class="nav-cta">Try It Free</a>
+        </nav>
+
+        <!-- Hero Screen -->
+        <section class="screen hero">
+            <svg class="etch-svg" viewBox="0 0 1200 400">
+                <path d="M100,200 L200,100 L300,200 L400,100 L500,200 L600,100 L700,200 L800,100 L900,200 L1000,100 L1100,200" />
+            </svg>
+            <p class="section-label">For Professional Investors</p>
+            <h1 class="hero-headline">Prediction Markets Are Booming.<br>Your Portfolio Isn't Connected.</h1>
+            <p class="hero-subhead">Polymarket's "French Whale" made $30M betting on Trump's win. Billionaire hedge fund managers are calling prediction markets essential. But connecting those odds to your investment decisions? That's still impossibly hard.</p>
+            <div class="etch-line"></div>
+        </section>
+
+        <!-- Problem Section -->
+        <section class="screen problem-section fade-in">
+            <p class="section-label">The Problem</p>
+            <h2 class="problem-headline">The Gap Between Event Odds and Investment Returns Is Costing You Alpha</h2>
+
+            <div class="problem-grid">
+                <div class="problem-card">
+                    <h3>Fragmented Data</h3>
+                    <p>Prediction market odds live in one universe. Your portfolio models live in another. Manually bridging them means spreadsheets, guesswork, and missed opportunities.</p>
+                </div>
+                <div class="problem-card">
+                    <h3>No Structured Framework</h3>
+                    <p>How does a 65% probability of Fed rate cuts translate to your tech holdings? Without a systematic approach, you're flying blind on event-driven positioning.</p>
+                </div>
+                <div class="problem-card">
+                    <h3>Unscalable Process</h3>
+                    <p>Decision trees work for one investment. But across a portfolio of 50+ positions? The complexity explodes. Traditional methods simply can't keep up.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quote Section -->
+        <section class="screen quote-section fade-in">
+            <div class="etch-line zigzag"></div>
+            <p class="quote-text">"My conclusion is that incorporating BOTH a betting market like @Polymarket along with structured, informed judgement is probably the best course."</p>
+            <p class="quote-author">Daniel Loeb</p>
+            <p class="quote-title">Billionaire Hedge Fund Manager, November 2024</p>
+            <div class="etch-line zigzag"></div>
+        </section>
+
+        <!-- Expertise Section -->
+        <section class="screen expertise-section fade-in">
+            <p class="section-label">We Are The Connection Experts</p>
+            <h2 class="expertise-headline">20+ Years Connecting Event Odds to Investment Returns</h2>
+            <p class="expertise-sub">Our founder learned decision trees at Stanford GSB, then spent two decades proving they work at the highest levels of institutional investing.</p>
+
+            <div class="credentials-grid">
+                <div class="credential">
+                    <div class="credential-number">$1B</div>
+                    <div class="credential-label">Harvard Endowment<br>"Center Book" Co-Managed</div>
+                </div>
+                <div class="credential">
+                    <div class="credential-number">3%</div>
+                    <div class="credential-label">Annualized Alpha<br>Over 7 Years</div>
+                </div>
+                <div class="credential">
+                    <div class="credential-number">100+</div>
+                    <div class="credential-label">Private Investments<br>Using Our System</div>
+                </div>
+                <div class="credential">
+                    <div class="credential-number">$1.5B</div>
+                    <div class="credential-label">NSF-Funded<br>Ontology Research</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Solution Section -->
+        <section class="screen solution-section fade-in">
+            <p class="section-label">The Solution</p>
+            <h2 class="solution-headline">Sketch Your Scenarios. Connect Your Odds.</h2>
+            <p class="solution-sub">Our patented ontology turns prediction market probabilities into actionable investment scenarios—systematically, at scale.</p>
+
+            <div class="feature-list">
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                    </div>
+                    <div class="feature-text">
+                        <h4>Connect Markets to Models</h4>
+                        <p>Pull live odds from Polymarket, Kalshi, and others directly into your investment scenarios.</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M4 12h16M12 4v16"/></svg>
+                    </div>
+                    <div class="feature-text">
+                        <h4>Build Decision Trees at Scale</h4>
+                        <p>Create interconnected event scenarios across your entire portfolio without drowning in complexity.</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12 20V10M6 20V14M18 20V4"/></svg>
+                    </div>
+                    <div class="feature-text">
+                        <h4>Quantify Impact on Returns</h4>
+                        <p>See exactly how changing event probabilities flow through to expected returns on each position.</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                    </div>
+                    <div class="feature-text">
+                        <h4>Update in Real-Time</h4>
+                        <p>As prediction market odds shift, watch your scenario-weighted valuations adjust automatically.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="screen cta-section fade-in" id="try-it">
+            <h2 class="cta-headline">Ready to Sketch Your Edge?</h2>
+            <p class="cta-sub">Join the investors who've stopped guessing and started connecting. Try Etcha free—no credit card required.</p>
+            <a href="#" class="cta-button">Start Sketching Free</a>
+        </section>
+
+        <!-- Dial decorations -->
+        <div class="dial-container">
+            <div class="dial"></div>
+            <div class="dial"></div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p class="footer-text">ETCHA.COMPANY &copy; 2025</p>
+        </footer>
+    </div>
+
+    <script>
+        // Scroll-triggered fade-in animation
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // Subtle dial rotation on scroll
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            const dials = document.querySelectorAll('.dial');
+            dials[0].style.transform = `rotate(${scrollY * 0.1}deg)`;
+            dials[1].style.transform = `rotate(${-scrollY * 0.1}deg)`;
+        });
+    </script>
+</body>
+</html>

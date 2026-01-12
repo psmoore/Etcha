@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(frontend-design)",
+      "Skill(frontend-design:*)",
+      "Bash(start \"\" \"c:\\\\Users\\\\psmoo\\\\OneDrive\\\\Documents\\\\GitHub\\\\Etcha\\\\index.html\")",
+      "Bash(git init:*)",
+      "Bash(git add:*)"
+    ]
+  }
+}
