@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Red rounded square frame -->
+  <rect x="2" y="2" width="96" height="96" rx="12" ry="12" fill="#CC0000"/>
+  <!-- Grey screen -->
+  <rect x="14" y="10" width="72" height="68" rx="8" ry="8" fill="#E8E4E0" stroke="#666" stroke-width="1"/>
+  <!-- Left dial -->
+  <circle cx="22" cy="88" r="6" fill="white"/>
+  <!-- Right dial -->
+  <circle cx="78" cy="88" r="6" fill="white"/>
+</svg>
