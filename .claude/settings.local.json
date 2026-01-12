@@ -19,7 +19,8 @@
       "Bash(netlify link:*)",
       "Bash(netlify domains:add:*)",
       "Bash(netlify api addSiteDomain:*)",
-      "Bash(netlify api:*)"
+      "Bash(netlify api:*)",
+      "Bash(git push:*)"
     ]
   }
 }
