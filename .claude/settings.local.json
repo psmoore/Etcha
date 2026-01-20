@@ -20,7 +20,18 @@
       "Bash(netlify domains:add:*)",
       "Bash(netlify api addSiteDomain:*)",
       "Bash(netlify api:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Skill(prd)",
+      "Skill(ralph)",
+      "Bash(npx tsc:*)",
+      "Bash(powershell -Command \"cd ''C:\\\\Users\\\\Administrator\\\\Documents\\\\GitHub\\\\Etcha\\\\ralph\\\\etcha-movers''; npx tsc --noEmit\")",
+      "Bash(powershell -Command \"Invoke-RestMethod -Uri ''https://api.elections.kalshi.com/trade-api/v2/markets?limit=5&status=open'' | ConvertTo-Json -Depth 5 | Select-String -Pattern ''category'' -Context 1,1\")",
+      "Bash(powershell -Command \"\\(Invoke-RestMethod -Uri ''https://api.elections.kalshi.com/trade-api/v2/markets?limit=3&status=open''\\).markets | Select-Object ticker, title, category | ConvertTo-Json\")",
+      "Bash(powershell -Command \"\\(Invoke-RestMethod -Uri ''https://api.elections.kalshi.com/trade-api/v2/markets?limit=20&status=open''\\).markets | Select-Object ticker, title | ConvertTo-Json\")",
+      "Bash(powershell -Command \"\\(Invoke-RestMethod -Uri ''https://api.elections.kalshi.com/trade-api/v2/markets?limit=50&status=open''\\).markets | Where-Object { $_ticker -notmatch ''SPORT|NBA|NFL|MLB|NHL'' } | Select-Object ticker, title -First 10 | ConvertTo-Json\")",
+      "Bash(curl:*)",
+      "Bash(powershell -Command \"\\(Invoke-RestMethod -Uri ''https://api.manifold.markets/v0/markets?limit=10''\\) | ForEach-Object { $_groupSlugs } | ConvertTo-Json\")",
+      "Bash(powershell -Command \"\\(Invoke-RestMethod -Uri ''https://api.manifold.markets/v0/search-markets?term=sports&limit=5''\\)[0] | ConvertTo-Json -Depth 3\")"
     ]
   }
 }
